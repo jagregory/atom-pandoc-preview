@@ -16,5 +16,7 @@ module.exports =
   show: ->
     editor = atom.workspace.getActiveEditor()
     return unless editor?
-    atom.workspace.open("pandoc-preview://#{editor.getPath()}").done (view) ->
+    previousActivePane = atom.workspace.getActivePane()
+    atom.workspace.open("pandoc-preview://#{editor.getPath()}", split: 'right').done (view) ->
       view.render()
+      previousActivePane.activate()
