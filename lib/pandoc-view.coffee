@@ -32,7 +32,7 @@ class PandocView extends ScrollView
     @unsubscribe()
 
   getTitle: ->
-    'meow'
+    "#{path.basename @filePath} Preview"
 
   showError: (msg) ->
     @html $$$ ->
