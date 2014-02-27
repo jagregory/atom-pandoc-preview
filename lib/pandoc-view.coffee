@@ -40,11 +40,14 @@ class PandocView extends ScrollView
       @h3 msg if msg?
 
   render: ->
+    cmd = atom.config.get 'pandoc.cmd'
+    args = atom.config.get 'pandoc.args'
+
     input = fs.createReadStream(@filePath)
 
     stdout = ''
     stderr = ''
-    pandoc = childProcess.spawn('pandoc', ['-f', 'markdown', '-t', 'html5', '-s', '-S', '--self-contained'], {
+    pandoc = childProcess.spawn(cmd, [args], {
       cwd: atom.project.path
     })
     pandoc.stdout.on 'data', (data) =>

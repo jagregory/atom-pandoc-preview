@@ -5,6 +5,10 @@ PandocView = require './pandoc-view'
 
 module.exports =
   activate: (state) ->
+    cmd = 'pandoc'
+    args = '-f markdown -t html5 -s -S --self-contained'
+    atom.config.setDefaults('pandoc', {cmd, args})
+
     atom.workspaceView.command 'pandoc-preview:show', =>
       @show()
 
