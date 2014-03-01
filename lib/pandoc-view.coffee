@@ -16,11 +16,7 @@ class PandocView extends ScrollView
   constructor: (title, getText) ->
     super
     @title = title
-    @getTextStream = ->
-      input = new Stream.Readable()
-      input.push getText()
-      input.push null
-      input
+    @getText = getText
     @handleEvents()
     @callback = setInterval (=> @render()), 1000
 
@@ -46,7 +42,18 @@ class PandocView extends ScrollView
       @h2 'Previewing Failed'
       @h3 msg if msg?
 
+  getTextStream: (text) ->
+    input = new Stream.Readable()
+    input.push text
+    input.push null
+    input
+
   render: ->
-    pandoc @getTextStream(),
-      (d) => @html d,
+    text = @getText()
+    return if @lastText == text
+
+    pandoc @getTextStream(text),
+      (d) =>
+        @html d
+        @lastText = text
       (d) => @showError d
