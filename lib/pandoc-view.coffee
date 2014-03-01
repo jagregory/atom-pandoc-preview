@@ -22,6 +22,7 @@ class PandocView extends ScrollView
       input.push null
       input
     @handleEvents()
+    @callback = setInterval (=> @render()), 1000
 
   handleEvents: ->
     @subscribe this, 'core:move-up', => @scrollUp()
@@ -35,6 +36,7 @@ class PandocView extends ScrollView
   # Tear down any state and detach
   destroy: ->
     @unsubscribe()
+    clearInterval @callback
 
   getTitle: ->
     "#{@title} Preview"

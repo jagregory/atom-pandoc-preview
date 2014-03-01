@@ -14,7 +14,6 @@ There are two config settings:
 ## Limitations
 
   * It's dumb at the moment. Very dumb. By default, it assumes your file is Markdown and outputs HTML5. That's it.
-  * The window doesn't refresh, and you can't preview without saving.
   * The styles are quite ugly.
   * Full page output, including custom stylesheets, will screw with Atom quite significantly.
 
