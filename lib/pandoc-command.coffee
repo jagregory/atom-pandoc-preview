@@ -1,13 +1,25 @@
 childProcess = require 'child_process'
+_ = require 'underscore-plus'
 
-module.exports = (inputStream, {done, err}) ->
+languages =
+  'github markdown': 'markdown'
+  'html': 'html5'
+  'markdown': 'markdown'
+  'latex': 'latex'
+
+language = (name) ->
+  languages[name.toLowerCase()] || 'markdown'
+
+args = (from) ->
+  _.flatten ["-f #{language from} -t html5", atom.config.get('pandoc.args')]
+
+module.exports = (inputStream, {from, done, err}) ->
   cmd = atom.config.get 'pandoc.cmd'
-  args = atom.config.get 'pandoc.args'
   cwd = atom.project.path
 
   stdout = ''
   stderr = ''
-  pandoc = childProcess.spawn cmd, [args], {cwd}
+  pandoc = childProcess.spawn cmd, args(from), {cwd}
   pandoc.stdout.on 'data', (d) -> stdout += d.toString()
   pandoc.stderr.on 'data', (d) -> stderr += d.toString()
   pandoc.on 'close', ->

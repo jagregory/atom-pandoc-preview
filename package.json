@@ -11,6 +11,7 @@
     "atom": "*"
   },
   "dependencies": {
-    "fs-plus": "2.x"
+    "fs-plus": "2.x",
+    "underscore-plus": "1.x"
   }
 }
