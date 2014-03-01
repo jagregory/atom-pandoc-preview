@@ -1,6 +1,7 @@
 {$, $$$, ScrollView} = require 'atom'
 path = require 'path'
 pandoc = require './pandoc-command'
+Stream = require 'stream'
 
 module.exports =
 class PandocView extends ScrollView
@@ -12,9 +13,13 @@ class PandocView extends ScrollView
   @content: ->
     @div class: 'pandoc-preview native-key-bindings', tabindex: -1
 
-  constructor: (filePath) ->
+  constructor: (getText) ->
     super
-    @filePath = filePath
+    @getTextStream = ->
+      input = new Stream.Readable()
+      input.push getText()
+      input.push null
+      input
     @handleEvents()
 
   handleEvents: ->
@@ -39,6 +44,6 @@ class PandocView extends ScrollView
       @h3 msg if msg?
 
   render: ->
-    pandoc @filePath,
+    pandoc @getTextStream(),
       (d) => @html d,
       (d) => @showError d

@@ -1,7 +1,6 @@
 childProcess = require 'child_process'
-fs = require 'fs'
 
-module.exports = (path, done, err) ->
+module.exports = (inputStream, done, err) ->
   cmd = atom.config.get 'pandoc.cmd'
   args = atom.config.get 'pandoc.args'
   cwd = atom.project.path
@@ -16,4 +15,4 @@ module.exports = (path, done, err) ->
       done stdout
     else
       err stderr
-  fs.createReadStream(path).pipe pandoc.stdin
+  inputStream.pipe pandoc.stdin
