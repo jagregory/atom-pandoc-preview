@@ -13,8 +13,9 @@ class PandocView extends ScrollView
   @content: ->
     @div class: 'pandoc-preview native-key-bindings', tabindex: -1
 
-  constructor: (getText) ->
+  constructor: (title, getText) ->
     super
+    @title = title
     @getTextStream = ->
       input = new Stream.Readable()
       input.push getText()
@@ -36,7 +37,7 @@ class PandocView extends ScrollView
     @unsubscribe()
 
   getTitle: ->
-    "#{path.basename @filePath} Preview"
+    "#{@title} Preview"
 
   showError: (msg) ->
     @html $$$ ->
