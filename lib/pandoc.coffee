@@ -15,7 +15,7 @@ module.exports =
   show: ->
     editor = atom.workspace.getActiveEditor()
     return unless editor?
-    view = new PandocView(editor.getTitle(), -> editor.getText())
+    view = new PandocView(editor)
     pane = atom.workspace.getActivePane().splitRight()
     pane.addItem view
     view.render()

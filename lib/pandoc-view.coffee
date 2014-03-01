@@ -13,10 +13,9 @@ class PandocView extends ScrollView
   @content: ->
     @div class: 'pandoc-preview native-key-bindings', tabindex: -1
 
-  constructor: (title, getText) ->
+  constructor: (editor) ->
     super
-    @title = title
-    @getText = getText
+    @editor = editor
     @handleEvents()
     @callback = setInterval (=> @render()), 1000
 
@@ -35,7 +34,7 @@ class PandocView extends ScrollView
     clearInterval @callback
 
   getTitle: ->
-    "#{@title} Preview"
+    "#{@editor.getTitle()} Preview"
 
   showError: (msg) ->
     @html $$$ ->
@@ -49,7 +48,7 @@ class PandocView extends ScrollView
     input
 
   render: ->
-    text = @getText()
+    text = @editor.getText()
     return if @lastText == text
 
     pandoc @getTextStream(text),
