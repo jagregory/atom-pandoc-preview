@@ -1,7 +1,6 @@
-path = require 'path'
 {$, $$$, ScrollView} = require 'atom'
-fs = require 'fs'
-childProcess = require 'child_process'
+path = require 'path'
+pandoc = require './pandoc-command'
 
 module.exports =
 class PandocView extends ScrollView
@@ -39,24 +38,7 @@ class PandocView extends ScrollView
       @h2 'Previewing Failed'
       @h3 msg if msg?
 
-  pandoc: (path, done, err) ->
-    cmd = atom.config.get 'pandoc.cmd'
-    args = atom.config.get 'pandoc.args'
-    cwd = atom.project.path
-
-    stdout = ''
-    stderr = ''
-    pandoc = childProcess.spawn cmd, [args], {cwd}
-    pandoc.stdout.on 'data', (d) -> stdout += d.toString()
-    pandoc.stderr.on 'data', (d) -> stderr += d.toString()
-    pandoc.on 'close', ->
-      if stderr == ''
-        done stdout
-      else
-        err stderr
-    fs.createReadStream(path).pipe pandoc.stdin
-
   render: ->
-    @pandoc @filePath,
+    pandoc @filePath,
       (d) => @html d,
       (d) => @showError d
