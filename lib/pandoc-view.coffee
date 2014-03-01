@@ -51,8 +51,9 @@ class PandocView extends ScrollView
     text = @editor.getText()
     return if @lastText == text
 
-    pandoc @getTextStream(text),
-      (d) =>
-        @html d
-        @lastText = text
-      (d) => @showError d
+    done = (d) =>
+      @html d
+      @lastText = text
+    err = (d) => @showError d
+
+    pandoc @getTextStream(text), {done, err}
