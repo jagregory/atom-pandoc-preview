@@ -1,6 +1,7 @@
 {$, $$$, View} = require 'atom'
-path = require 'path'
+fs = require 'fs-plus'
 pandoc = require './pandoc-command'
+path = require 'path'
 Stream = require 'stream'
 
 module.exports =
@@ -11,7 +12,8 @@ class PandocView extends View
     new PandocView(filepath)
 
   @content: ->
-    @div class: 'pandoc-preview native-key-bindings', tabindex: -1
+    @div class: 'pandoc-preview native-key-bindings', tabindex: -1, =>
+      @iframe src: '/tmp/pandoc-preview'
 
   constructor: (editor) ->
     super
@@ -42,18 +44,18 @@ class PandocView extends View
     input.push null
     input
 
-  frame: (html) ->
-    @html $$$ ->
-      @iframe src: "data:text/html, #{encodeURIComponent html}"
+  reloadFrame: () ->
+    @find('iframe')[0].contentWindow.location.reload()
 
   render: ->
     text = @editor.getText()
     return if @lastText == text
 
-    done = (d) =>
-      @frame d
-      @lastText = text
-    err = (d) => @showError d
-    from = @editor.getGrammar().name
-
-    pandoc @getTextStream(text), {from, done, err}
+    out = fs.createWriteStream '/tmp/pandoc-preview'
+    pandoc @getTextStream(text), out,
+      from: @editor.getGrammar().name
+      done: =>
+        @reloadFrame()
+        @lastText = text
+      err: (d) =>
+        @showError d
