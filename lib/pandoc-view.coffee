@@ -1,6 +1,7 @@
+_ = require 'underscore-plus'
 {$, $$$, View} = require 'atom'
-path = require 'path'
 pandoc = require './pandoc-command'
+path = require 'path'
 Stream = require 'stream'
 
 module.exports =
@@ -16,7 +17,7 @@ class PandocView extends View
   constructor: (editor) ->
     super
     @editor = editor
-    @callback = setInterval (=> @render()), 1000
+    @subscribe editor.buffer, 'changed', _.debounce((=> @render()), 400)
 
   # Returns an object that can be retrieved when package is activated
   serialize: ->
@@ -26,7 +27,6 @@ class PandocView extends View
   # Tear down any state and detach
   destroy: ->
     @unsubscribe()
-    clearInterval @callback
 
   getTitle: ->
     "#{@editor.getTitle()} Preview"
@@ -47,13 +47,7 @@ class PandocView extends View
       @iframe src: "data:text/html, #{encodeURIComponent html}"
 
   render: ->
-    text = @editor.getText()
-    return if @lastText == text
-
-    done = (d) =>
-      @frame d
-      @lastText = text
-    err = (d) => @showError d
-    from = @editor.getGrammar().name
-
-    pandoc @getTextStream(text), {from, done, err}
+    pandoc @getTextStream(@editor.getText()),
+      from: @editor.getGrammar().name
+      done: (d) => @frame d
+      err: (d) => @showError d
