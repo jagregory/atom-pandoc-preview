@@ -4,6 +4,8 @@ pandoc = require './pandoc-command'
 path = require 'path'
 Stream = require 'stream'
 Crypto = require 'crypto'
+pdfjs = require './pdf'
+pdfjsworker = require './pdf.worker'
 
 module.exports =
 class PandocView extends View
