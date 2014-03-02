@@ -6,14 +6,14 @@ Commands:
 
   * `Pandoc Preview: Show` will run the current buffer through Pandoc and show it in a new pane.
 
-There are two config settings:
+There are three config settings:
 
   * `pandoc.cmd` which is the pandoc executable. This needs to be on your `PATH`.
   * `pandoc.args` which are the command-line arguments to pandoc, defaults to `-f markdown -t html5 -s -S --self-contained`.
+  * `pandoc.languages`, a map of Atom grammar names to Pandoc input formats.
 
 ## Limitations
 
-  * It's dumb at the moment. Very dumb. By default, it assumes your file is Markdown and outputs HTML5. That's it.
   * The styles are quite ugly.
   * Full page output, including custom stylesheets, will screw with Atom quite significantly.
 

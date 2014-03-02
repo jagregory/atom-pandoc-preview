@@ -1,14 +1,8 @@
 childProcess = require 'child_process'
 _ = require 'underscore-plus'
 
-languages =
-  'github markdown': 'markdown'
-  'html': 'html5'
-  'markdown': 'markdown'
-  'latex': 'latex'
-
 language = (name) ->
-  languages[name.toLowerCase()] || 'markdown'
+  (atom.config.get('pandoc.languages') || {})[name.toLowerCase()] || 'markdown'
 
 args = (from) ->
   _.flatten ["-f #{language from} -t html5", atom.config.get('pandoc.args')]

@@ -5,9 +5,7 @@ PandocView = require './pandoc-view'
 
 module.exports =
   activate: (state) ->
-    cmd = 'pandoc'
-    args = '-s -S --self-contained'
-    atom.config.setDefaults('pandoc', {cmd, args})
+    @setConfigDefaults()
 
     atom.workspaceView.command 'pandoc-preview:show', =>
       @show()
@@ -19,3 +17,13 @@ module.exports =
     pane = atom.workspace.getActivePane().splitRight()
     pane.addItem view
     view.render()
+
+  setConfigDefaults: ->
+    atom.config.setDefaults 'pandoc',
+      cmd: 'pandoc'
+      args: '-s -S --self-contained'
+      languages:
+        'github markdown': 'markdown'
+        'html': 'html5'
+        'markdown': 'markdown'
+        'latex': 'latex'
