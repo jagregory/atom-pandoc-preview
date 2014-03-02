@@ -1,8 +1,10 @@
 {
   "name": "pandoc",
   "main": "./lib/pandoc",
-  "version": "0.0.1",
-  "activationEvents": ["pandoc-preview:show"],
+  "version": "0.1.0",
+  "activationEvents": [
+    "pandoc-preview:show"
+  ],
   "private": false,
   "description": "Pandoc Previewer",
   "repository": "https://github.com/jagregory/atom-pandoc-preview",
