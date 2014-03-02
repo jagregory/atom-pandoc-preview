@@ -1,7 +1,7 @@
 {
   "name": "pandoc",
   "main": "./lib/pandoc",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "activationEvents": [
     "pandoc-preview:show"
   ],
