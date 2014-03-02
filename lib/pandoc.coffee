@@ -21,7 +21,7 @@ module.exports =
   setConfigDefaults: ->
     atom.config.setDefaults 'pandoc',
       cmd: 'pandoc'
-      args: '-s -S --self-contained'
+      args: '-s -S --self-contained --ascii'
       languages:
         'github markdown': 'markdown'
         'html': 'html5'

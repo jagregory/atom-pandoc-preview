@@ -1,10 +1,10 @@
-{$, $$$, ScrollView} = require 'atom'
+{$, $$$, View} = require 'atom'
 path = require 'path'
 pandoc = require './pandoc-command'
 Stream = require 'stream'
 
 module.exports =
-class PandocView extends ScrollView
+class PandocView extends View
   atom.deserializers.add(this)
 
   @deserialize: ({filePath}) ->
@@ -16,12 +16,7 @@ class PandocView extends ScrollView
   constructor: (editor) ->
     super
     @editor = editor
-    @handleEvents()
     @callback = setInterval (=> @render()), 1000
-
-  handleEvents: ->
-    @subscribe this, 'core:move-up', => @scrollUp()
-    @subscribe this, 'core:move-down', => @scrollDown()
 
   # Returns an object that can be retrieved when package is activated
   serialize: ->
@@ -47,12 +42,16 @@ class PandocView extends ScrollView
     input.push null
     input
 
+  frame: (html) ->
+    @html $$$ ->
+      @iframe src: "data:text/html, #{encodeURIComponent html}"
+
   render: ->
     text = @editor.getText()
     return if @lastText == text
 
     done = (d) =>
-      @html d
+      @frame d
       @lastText = text
     err = (d) => @showError d
     from = @editor.getGrammar().name
