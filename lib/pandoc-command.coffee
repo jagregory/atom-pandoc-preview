@@ -7,7 +7,7 @@ language = (name) ->
 args = (from) ->
   pandoc_args = "-f #{language from} -t html5" + ' ' + atom.config.get('pandoc.args')
 
-  return _.compact(pandoc_args.replace(/(-[\w-]+)\s*/gm, '\r\n$1\r\n').split('\r\n'))
+  return _.compact(pandoc_args.replace(/(-[\S]+)\s*/gm, '\r\n$1\r\n').split('\r\n'))
     .map((s)-> s.trim().replace(/^("|')([\s\S]*?)\1$/g, '$2'))
 
 module.exports = (inputStream, {from, done, err}) ->
