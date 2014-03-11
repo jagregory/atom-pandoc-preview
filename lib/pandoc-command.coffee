@@ -6,6 +6,8 @@ language = (name) ->
 
 args = (from) ->
   _.flatten ["-f #{language from} -t html5", atom.config.get('pandoc.args')]
+  .join(' ')
+  .split(' ')
 
 module.exports = (inputStream, {from, done, err}) ->
   cmd = atom.config.get 'pandoc.cmd'
