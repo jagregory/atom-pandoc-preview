@@ -5,7 +5,10 @@ language = (name) ->
   (atom.config.get('pandoc.languages') || {})[name.toLowerCase()] || 'markdown'
 
 args = (from) ->
-  _.flatten ["-f #{language from} -t html5", atom.config.get('pandoc.args')]
+  pandoc_args = "-f #{language from} -t html5" + ' ' + atom.config.get('pandoc.args')
+
+  return _.compact(pandoc_args.replace(/(-[\S]+)\s*/gm, '\r\n$1\r\n').split('\r\n'))
+    .map((s)-> s.trim().replace(/^("|')([\s\S]*?)\1$/g, '$2'))
 
 module.exports = (inputStream, {from, done, err}) ->
   cmd = atom.config.get 'pandoc.cmd'
