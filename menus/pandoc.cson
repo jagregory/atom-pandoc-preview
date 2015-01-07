@@ -9,7 +9,7 @@
     'submenu': [
       'label': 'pandoc'
       'submenu': [
-        { 'label': 'Preview', 'command': 'pandoc:show' }
+        { 'label': 'Preview', 'command': 'pandoc-preview:show' }
       ]
     ]
   }
