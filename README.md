@@ -21,15 +21,19 @@ There are three config settings:
 
 To find the `pandoc` executable, ideally Atom should be able to find it on your `PATH`. Unfortunately, environment variables are a bit of an issue with GUI applications on OS X. Google it or see [Setting Environment Variables in OS X?](http://stackoverflow.com/questions/135688/setting-environment-variables-in-os-x).
 
-For the `atom` command, you need to make sure Atom is loaded via env (which it isn't currently).
+For the `atom` command, you need to make sure Atom is loaded via env (in some older versions of Atom it is not).
 
     vim `which atom`
 
-Change:
+If you can find the following, you are fine:
+
+    open -a "$ATOM_PATH/$ATOM_APP_NAME" -n --args --executed-from="$(pwd)" --pid=$$ --path-environment="$PATH" "$@"
+
+If you see the following instead:
 
     open -a $ATOM_PATH -n --args --executed-from="$(pwd)" --pid=$$ $@
 
-to:
+Change it to:
 
     env open -a $ATOM_PATH -n --args --executed-from="$(pwd)" --pid=$$ $@
 
