@@ -1,16 +1,11 @@
 # See https://atom.io/docs/latest/creating-a-package#menus for more details
 'context-menu':
-  '.overlayer':
-      'Enable pandoc': 'pandoc:toggle'
+  'atom-text-editor': [{ label: 'Enable pandoc', command: 'pandoc:toggle' }]
 
-'menu': [
-  {
-    'label': 'Packages'
-    'submenu': [
-      'label': 'pandoc'
-      'submenu': [
-        { 'label': 'Preview', 'command': 'pandoc-preview:show' }
-      ]
-    ]
-  }
-]
+'menu': [{
+  'label': 'Packages'
+  'submenu': [{
+    'label': 'pandoc'
+    'submenu': [{ 'label': 'Preview', 'command': 'pandoc-preview:show' }]
+  }]
+}]
