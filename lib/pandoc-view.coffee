@@ -1,5 +1,6 @@
 _ = require 'underscore-plus'
-{$, $$$, View} = require 'atom'
+{CompositeDisposable} = require 'atom'
+{$, $$$, View} = require 'atom-space-pen-views'
 pandoc = require './pandoc-command'
 path = require 'path'
 Stream = require 'stream'
@@ -16,8 +17,9 @@ class PandocView extends View
 
   constructor: (editor) ->
     super
+    @disposables = new CompositeDisposable
     @editor = editor
-    @subscribe editor.buffer, 'changed', _.debounce((=> @render()), 400)
+    editor.onDidChange _.debounce((=> @render()), 400)
 
   # Returns an object that can be retrieved when package is activated
   serialize: ->
@@ -26,7 +28,7 @@ class PandocView extends View
 
   # Tear down any state and detach
   destroy: ->
-    @unsubscribe()
+    @disposable.dispose()
 
   getTitle: ->
     "#{@editor.getTitle()} Preview"

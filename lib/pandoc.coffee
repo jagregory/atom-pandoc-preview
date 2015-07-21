@@ -2,28 +2,29 @@ url = require 'url'
 fs = require 'fs-plus'
 
 PandocView = require './pandoc-view'
+{CompositeDisposable} = require 'atom'
 
 module.exports =
-  activate: (state) ->
-    @setConfigDefaults()
+  config:
+    cmd:
+      type: 'string'
+      default: 'pandoc'
+    args:
+      type: 'string'
+      default: '-s -S --self-contained --ascii'
 
-    atom.workspaceView.command 'pandoc-preview:show', =>
+  activate: (state) ->
+    @disposables = new CompositeDisposable
+    @disposables.add atom.commands.add 'atom-workspace', 'pandoc-preview:show', =>
       @show()
 
+  deactivate: ->
+    @disposables.dispose()
+
   show: ->
-    editor = atom.workspace.getActiveEditor()
+    editor = atom.workspace.getActiveTextEditor()
     return unless editor?
     view = new PandocView(editor)
     pane = atom.workspace.getActivePane().splitRight()
     pane.addItem view
     view.render()
-
-  setConfigDefaults: ->
-    atom.config.setDefaults 'pandoc',
-      cmd: 'pandoc'
-      args: '-s -S --self-contained --ascii'
-      languages:
-        'github markdown': 'markdown'
-        'html': 'html5'
-        'markdown': 'markdown'
-        'latex': 'latex'
