@@ -28,7 +28,7 @@ class PandocView extends View
 
   # Tear down any state and detach
   destroy: ->
-    @disposable.dispose()
+    @disposables.dispose()
 
   getTitle: ->
     "#{@editor.getTitle()} Preview"
